@@ -62,6 +62,8 @@ public class DatabaseConnector {
 
     public void uploadData(ArrayList<Map<String, String>> data){
 
+        deleteData();
+
         // ArrayList with the data from the API call.
         ArrayList<Map<String, String>> stockValues = data;
 
@@ -118,4 +120,18 @@ public class DatabaseConnector {
 
 
     }
+
+    private void deleteData() {
+        try {
+            // Connection to the MariaDB
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            String query = "delete from dailyprices";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.execute();
+            conn.close();
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+    }
+
 }
