@@ -65,7 +65,8 @@ public class URLModel {
     }
 
     public void setUrl() {
-        String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+asset+"&interval="+ interval+"&apikey="+key;
+       String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+asset+"&interval="+ interval+"&outputsize=full&apikey="+key;
+        //String url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&outputsize=full&apikey=1A79MCHMT69G16RE";
         this.url = url;
     }
 

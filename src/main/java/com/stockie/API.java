@@ -43,7 +43,7 @@ public class API {
             JSONObject obj = new JSONObject(response);
 
             // Dive into the structure of the JSON
-            String mData = obj.getJSONObject("Time Series (5min)").toString();
+            String mData = obj.getJSONObject("Time Series (1min)").toString();
 
 
             JSONObject objtwo = new JSONObject(mData);

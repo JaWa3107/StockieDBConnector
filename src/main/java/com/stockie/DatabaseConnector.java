@@ -1,4 +1,5 @@
 package com.stockie;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
@@ -17,7 +18,15 @@ public class DatabaseConnector {
     /**
      Constructor
      */
-    public DatabaseConnector() {}
+    public DatabaseConnector() throws IOException {
+
+        URLModel url = new URLModel("1A79MCHMT69G16RE","AAPL","1min","TIME_SERIES_INTRADAY");
+        API api = new API();
+        String alphaVantageUrl = url.getUrl();
+        String response = api.getWebPage(alphaVantageUrl);
+        ArrayList<Map<String, String>> data = api.getJson(response);
+        uploadData(data);
+    }
 
     /**
      Method which shows all entries from the database.
@@ -62,7 +71,7 @@ public class DatabaseConnector {
 
     public void uploadData(ArrayList<Map<String, String>> data){
 
-        deleteData();
+        //deleteData();
 
         // ArrayList with the data from the API call.
         ArrayList<Map<String, String>> stockValues = data;
@@ -88,7 +97,7 @@ public class DatabaseConnector {
                 Connection conn = DriverManager.getConnection(url, user, pass);
 
                 // Create an INSERT INTO query
-                String query = "insert into dailyprices (Asset_ID, Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?, ?)";
+                String query = "INSERT IGNORE INTO dailyprices (Asset_ID, Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?, ?)";
 
                 /*
                     Prepared Statements for an safety upload into the MariaDB
@@ -125,7 +134,7 @@ public class DatabaseConnector {
         try {
             // Connection to the MariaDB
             Connection conn = DriverManager.getConnection(url, user, pass);
-            String query = "delete from dailyprices";
+            String query = "delete from history_prices";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.execute();
             conn.close();
