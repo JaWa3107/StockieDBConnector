@@ -78,9 +78,9 @@ public class URLModel {
         for (String keys : assetUrls.keySet())
         {
 
-            String variableKey = keys;
-            String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+variableKey+"&interval="+ interval+"&apikey="+key;
-            this.assetUrls.put(variableKey, url);
+            String assetKey = keys;
+            String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+assetKey+"&interval="+ interval+"&apikey="+key;
+            this.assetUrls.put(assetKey, url);
         }
 
     }

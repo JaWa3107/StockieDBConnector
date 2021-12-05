@@ -14,17 +14,19 @@ public class Main {
 
         System.out.println("test");
 
-        /*URLModel url = new URLModel("1A79MCHMT69G16RE","1min","TIME_SERIES_INTRADAY");
-        LinkedHashMap<String, String> assetUrls = url.getUrls();
+        URLModel url = new URLModel("1A79MCHMT69G16RE","1min","TIME_SERIES_INTRADAY");
 
+        LinkedHashMap<String, String> assetUrls = url.getUrls();
+        System.out.println(assetUrls.get("AAPL"));
+    /*
         for (String variableName : assetUrls.keySet()){
 
             System.out.println(variableName);
         }
-
+*/
        // System.out.println(assetUrls);
        // System.out.println(assetUrls.get("AAPL"));
-       // System.out.println(assetUrls.size());*/
+       // System.out.println(assetUrls.size());
 
 
         /**
@@ -33,7 +35,7 @@ public class Main {
          *
          * */
 
-        new DatabaseConnector();
+        //new DatabaseConnector();
     }
 }
 
