@@ -16,24 +16,39 @@ public class DatabaseConnector {
     private String url = "jdbc:mysql://185.188.250.67:3306/Se2Projekt";
     private String user = "root";
     private String pass = "StefanWolf2k21";
+    private URLModel urlModel = new URLModel("1A79MCHMT69G16RE","1min");
+    private API api = new API();
 
     /**
      Constructor
      */
     public DatabaseConnector() throws IOException {
+        daily();
+        history();
+    }
 
-        deleteData();
-
-        URLModel url = new URLModel("1A79MCHMT69G16RE","1min","TIME_SERIES_INTRADAY");
-        LinkedHashMap<String, String> alphavantageUrls = url.getUrls();
-        API api = new API();
+    public void daily() throws IOException {
 
 
+        LinkedHashMap<String, String> alphavantageUrls = urlModel.getAssetUrls();
 
         for (String key : alphavantageUrls.keySet()){
             String response = api.getWebPage(alphavantageUrls.get(key));
-            ArrayList<Map<String, String>> data = api.getJson(response);
-            uploadData(data, key);
+            ArrayList<Map<String, String>> data = api.getJson(response, "1min");
+            uploadData(data, key, "");
+
+        }
+
+    }
+
+    public void history() throws IOException {
+
+        LinkedHashMap<String, String> alphavantageUrls = urlModel.getAssetUrlsHistroy();
+
+        for (String key : alphavantageUrls.keySet()){
+            String response = api.getWebPage(alphavantageUrls.get(key));
+            ArrayList<Map<String, String>> data = api.getJson(response, "Daily");
+            uploadData(data, key, "_daily");
 
         }
 
@@ -80,7 +95,7 @@ public class DatabaseConnector {
      Method to write the data from the API call into the MariaDB
      */
 
-    public void uploadData(ArrayList<Map<String, String>> data,  String table_name){
+    public void uploadData(ArrayList<Map<String, String>> data,  String table_name, String table_identifier){
 
         //deleteData();
 
@@ -108,7 +123,7 @@ public class DatabaseConnector {
                 Connection conn = DriverManager.getConnection(url, user, pass);
 
                 // Create an INSERT INTO query
-                String query = "INSERT IGNORE INTO "+table_name+" (Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?)";
+                String query = "INSERT IGNORE INTO " + table_name + table_identifier + "(Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?)";
 
                 /*
                     Prepared Statements for an safety upload into the MariaDB

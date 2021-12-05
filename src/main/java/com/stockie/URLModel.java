@@ -13,6 +13,7 @@ public class URLModel {
     protected String url;
 
     LinkedHashMap<String, String> assetUrls = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> assetUrlsHistroy = new LinkedHashMap<String, String>();
 
     /**
 
@@ -24,11 +25,11 @@ public class URLModel {
 
     }
 
-    public URLModel (String key, String interval, String function){
+    public URLModel (String key, String interval){
         this.key = key;
         //this.asset = asset;
         this.interval = interval;
-        this.function = function;
+        //this.function = function;
         setAssets();
 
     }
@@ -51,9 +52,14 @@ public class URLModel {
         return function;
     }
 
-    public LinkedHashMap<String, String> getUrls(){
+    public LinkedHashMap<String, String> getAssetUrls(){
         setUrls();
         return this.assetUrls;
+    }
+
+    public LinkedHashMap<String, String> getAssetUrlsHistroy(){
+        setUrls();
+        return this.assetUrlsHistroy;
     }
 
     public void setKey(String key) {
@@ -63,6 +69,9 @@ public class URLModel {
     public void setAssets() {
         this.assetUrls.put("AAPL", "");
         this.assetUrls.put("MSFT", "");
+        this.assetUrls.put("TSLA", "");
+        this.assetUrls.put("NVDA", "");
+        this.assetUrls.put("AMZN", "");
     }
 
     public void setInterval(String interval) {
@@ -79,8 +88,13 @@ public class URLModel {
         {
 
             String assetKey = keys;
+            setFunction("TIME_SERIES_INTRADAY");
             String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+assetKey+"&interval="+ interval+"&apikey="+key;
+            setFunction("TIME_SERIES_DAILY");
+            String url2 ="https://www.alphavantage.co/query?function="+function+"&symbol="+assetKey+"&apikey="+key;
+
             this.assetUrls.put(assetKey, url);
+            this.assetUrlsHistroy.put(assetKey, url2);
         }
 
     }

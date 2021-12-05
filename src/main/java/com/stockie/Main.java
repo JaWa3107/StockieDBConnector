@@ -14,47 +14,29 @@ public class Main {
 
         System.out.println("test");
 
-        URLModel url = new URLModel("1A79MCHMT69G16RE","1min","TIME_SERIES_INTRADAY");
-
-        LinkedHashMap<String, String> assetUrls = url.getUrls();
-        System.out.println(assetUrls.get("AAPL"));
-    /*
-        for (String variableName : assetUrls.keySet()){
-
-            System.out.println(variableName);
-        }
-*/
-       // System.out.println(assetUrls);
-       // System.out.println(assetUrls.get("AAPL"));
-       // System.out.println(assetUrls.size());
-
-
         /**
          *
          * API CALLS AND UPLOAD TO THE MARIA DB
          *
          * */
 
-        //new DatabaseConnector();
+        URLModel url = new URLModel("1A79MCHMT69G16RE","1min");
+
+        LinkedHashMap<String, String> test1 =url.getAssetUrls();
+        LinkedHashMap<String, String> test2 = url.getAssetUrlsHistroy();
+
+        for (String key: test1.keySet()){
+
+            System.out.println(key+":" + test1.get(key));
+
+        }
+
+        for (String key: test2.keySet()){
+
+            System.out.println(key+":" + test2.get(key));
+
+        }
+
+        new DatabaseConnector();
     }
 }
-
-
-
-// TEST ABFRAGE!
-        /*URLModel url = new URLModel("1A79MCHMT69G16RE","AAPL","1min","TIME_SERIES_INTRADAY");
-        API api = new API();
-        String alphaVantageUrl = url.getUrl();
-        String response = api.getWebPage(alphaVantageUrl);
-        ArrayList<Map<String, String>> data = api.getJson(response);*/
-
-// DB Conector SELECT ABFRAGE UND UPLOAD API CALL
-
-//db.viewData();
-
-
-/** DIE UPLOAD METHODE ERSTMAL NICHT AUSFÜHREN !
- MUSS NOCH ANGEPASST WERDEN
- DATEN IN DER DB WÜRDEN SONST DOPPELT VORHANDEN SEIN.
- */
-//db.uploadData(data);

@@ -30,7 +30,7 @@ public class API {
      Method to get a structured Arraylist of all entries of the API call
      */
 
-    public ArrayList<Map<String, String>> getJson(String response) {
+    public ArrayList<Map<String, String>> getJson(String response, String identifier) {
 
         // Create a Hashmap to store the individual values
         Map<String, String> values = new HashMap<String, String>();
@@ -43,7 +43,7 @@ public class API {
             JSONObject obj = new JSONObject(response);
 
             // Dive into the structure of the JSON
-            String mData = obj.getJSONObject("Time Series (1min)").toString();
+            String mData = obj.getJSONObject("Time Series ("+identifier+")").toString();
 
 
             JSONObject objtwo = new JSONObject(mData);
