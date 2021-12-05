@@ -2,6 +2,7 @@ package com.stockie;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -20,12 +21,22 @@ public class DatabaseConnector {
      */
     public DatabaseConnector() throws IOException {
 
-        URLModel url = new URLModel("1A79MCHMT69G16RE","AAPL","1min","TIME_SERIES_INTRADAY");
+        //deleteData();
+
+        URLModel url = new URLModel("1A79MCHMT69G16RE","1min","TIME_SERIES_INTRADAY");
+        //ArrayList<String> alphavantageUrls = url.getUrls();
+        HashMap<String, String> alphavantageUrls = url.getUrls();
         API api = new API();
-        String alphaVantageUrl = url.getUrl();
-        String response = api.getWebPage(alphaVantageUrl);
-        ArrayList<Map<String, String>> data = api.getJson(response);
-        uploadData(data);
+
+        int index = 0;
+
+        for (String key : alphavantageUrls.keySet()){
+            String response = api.getWebPage(alphavantageUrls.get(key));
+            ArrayList<Map<String, String>> data = api.getJson(response);
+            uploadData(data, index);
+            index++;
+        }
+
     }
 
     /**
@@ -69,7 +80,7 @@ public class DatabaseConnector {
      Method to write the data from the API call into the MariaDB
      */
 
-    public void uploadData(ArrayList<Map<String, String>> data){
+    public void uploadData(ArrayList<Map<String, String>> data, int assetId){
 
         //deleteData();
 
@@ -97,14 +108,14 @@ public class DatabaseConnector {
                 Connection conn = DriverManager.getConnection(url, user, pass);
 
                 // Create an INSERT INTO query
-                String query = "INSERT IGNORE INTO dailyprices (Asset_ID, Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?, ?)";
+                String query = "INSERT IGNORE INTO history_prices (Asset_ID, Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?, ?)";
 
                 /*
                     Prepared Statements for an safety upload into the MariaDB
                  */
 
                 PreparedStatement preparedStmt = conn.prepareStatement(query);
-                preparedStmt.setInt(1, 0);
+                preparedStmt.setInt(1, assetId);
                 preparedStmt.setString(2, date);
                 preparedStmt.setDouble(3, open);
                 preparedStmt.setDouble(4, high);

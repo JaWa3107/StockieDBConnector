@@ -1,4 +1,8 @@
 package com.stockie;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class URLModel {
 
     protected String key;
@@ -7,6 +11,7 @@ public class URLModel {
     protected String function;
     protected String url;
 
+    HashMap<String, String> assetUrls = new HashMap<String, String>();
 
     /**
 
@@ -18,11 +23,13 @@ public class URLModel {
 
     }
 
-    public URLModel (String key, String asset, String interval, String function){
+    public URLModel (String key, String interval, String function){
         this.key = key;
-        this.asset = asset;
+        //this.asset = asset;
         this.interval = interval;
         this.function = function;
+        setAssets();
+
     }
 
 
@@ -43,17 +50,18 @@ public class URLModel {
         return function;
     }
 
-    public String getUrl(){
-        setUrl();
-        return url;
+    public HashMap<String, String> getUrls(){
+        setUrls();
+        return this.assetUrls;
     }
 
     public void setKey(String key) {
         this.key = key;
     }
 
-    public void setAsset(String asset) {
-        this.asset = asset;
+    public void setAssets() {
+        this.assetUrls.put("AAPL", "");
+        this.assetUrls.put("MSFT", "");
     }
 
     public void setInterval(String interval) {
@@ -64,10 +72,16 @@ public class URLModel {
         this.function = function;
     }
 
-    public void setUrl() {
-       String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+asset+"&interval="+ interval+"&outputsize=full&apikey="+key;
-        //String url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&outputsize=full&apikey=1A79MCHMT69G16RE";
-        this.url = url;
+    public void setUrls() {
+
+        for (String variableName : assetUrls.keySet())
+        {
+
+            String variableKey = variableName;
+            String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+variableKey+"&interval="+ interval+"&apikey="+key;
+            this.assetUrls.put(variableKey, url);
+        }
+
     }
 
 }
