@@ -2,6 +2,7 @@ package com.stockie;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class URLModel {
 
@@ -11,7 +12,7 @@ public class URLModel {
     protected String function;
     protected String url;
 
-    HashMap<String, String> assetUrls = new HashMap<String, String>();
+    LinkedHashMap<String, String> assetUrls = new LinkedHashMap<String, String>();
 
     /**
 
@@ -50,7 +51,7 @@ public class URLModel {
         return function;
     }
 
-    public HashMap<String, String> getUrls(){
+    public LinkedHashMap<String, String> getUrls(){
         setUrls();
         return this.assetUrls;
     }
@@ -74,10 +75,10 @@ public class URLModel {
 
     public void setUrls() {
 
-        for (String variableName : assetUrls.keySet())
+        for (String keys : assetUrls.keySet())
         {
 
-            String variableKey = variableName;
+            String variableKey = keys;
             String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+variableKey+"&interval="+ interval+"&apikey="+key;
             this.assetUrls.put(variableKey, url);
         }

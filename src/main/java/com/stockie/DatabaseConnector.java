@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -21,11 +22,10 @@ public class DatabaseConnector {
      */
     public DatabaseConnector() throws IOException {
 
-        //deleteData();
+        deleteData();
 
         URLModel url = new URLModel("1A79MCHMT69G16RE","1min","TIME_SERIES_INTRADAY");
-        //ArrayList<String> alphavantageUrls = url.getUrls();
-        HashMap<String, String> alphavantageUrls = url.getUrls();
+        LinkedHashMap<String, String> alphavantageUrls = url.getUrls();
         API api = new API();
 
         int index = 0;

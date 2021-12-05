@@ -2,6 +2,7 @@ package com.stockie;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Main {
@@ -14,16 +15,16 @@ public class Main {
         System.out.println("test");
 
         /*URLModel url = new URLModel("1A79MCHMT69G16RE","1min","TIME_SERIES_INTRADAY");
-        HashMap<String, String> assetUrls = url.getUrls();
+        LinkedHashMap<String, String> assetUrls = url.getUrls();
 
         for (String variableName : assetUrls.keySet()){
 
             System.out.println(variableName);
         }
 
-        System.out.println(assetUrls);
+       // System.out.println(assetUrls);
        // System.out.println(assetUrls.get("AAPL"));
-        System.out.println(assetUrls.size());*/
+       // System.out.println(assetUrls.size());*/
 
 
         /**
