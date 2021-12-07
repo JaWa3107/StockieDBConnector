@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 
 
 public class DatabaseConnector {
@@ -22,80 +24,44 @@ public class DatabaseConnector {
     /**
      Constructor
      */
-    public DatabaseConnector() throws IOException {
+    public DatabaseConnector() throws IOException, InterruptedException {
         daily();
-        history();
+        //TimeUnit.MINUTES.sleep(1);
+        //history();
     }
 
     public void daily() throws IOException {
 
 
         LinkedHashMap<String, String> alphavantageUrls = urlModel.getAssetUrls();
-
+        int index = 0;
         for (String key : alphavantageUrls.keySet()){
             String response = api.getWebPage(alphavantageUrls.get(key));
             ArrayList<Map<String, String>> data = api.getJson(response, "1min");
-            uploadData(data, key, "");
-
+            uploadData(data, key, index);
+            index++;
         }
 
     }
-
+    int index = 0;
     public void history() throws IOException {
 
         LinkedHashMap<String, String> alphavantageUrls = urlModel.getAssetUrlsHistroy();
-
+        int index = 0;
         for (String key : alphavantageUrls.keySet()){
             String response = api.getWebPage(alphavantageUrls.get(key));
             ArrayList<Map<String, String>> data = api.getJson(response, "Daily");
-            uploadData(data, key, "_daily");
-
+            uploadData(data, key, index);
+            index++;
         }
 
     }
-
-    /**
-     Method which shows all entries from the database.
-     */
-
-    public void viewData()  {
-
-        try {
-            // Connection to the MariaDB
-            Connection con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Verbindung erfolgreich hergestellt");
-
-            // Create a query
-            Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT * FROM dailyprices;");
-
-            // While loop to go through all entries
-            while (rs.next()) {
-                int id = rs.getInt("Asset_ID");
-                String price = rs.getString("Price_Date");
-                double open = rs.getDouble("open");
-                double high = rs.getDouble("high");
-                double low = rs.getDouble("low");
-                double close = rs.getDouble("close");
-                double volume= rs.getDouble("volume");
-
-                System.out.println("date"+"                | "+      "open"+"   | "+"high"+"   | "+"low"+ "     | "+"close"+" | "+ "volume");
-                System.out.println(price+" | "+open+" | "+high+" | "+low+ " | "+close+" | "+ volume);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-
-
-    }
-
 
     /**
      Method to write the data from the API call into the MariaDB
      */
 
-    public void uploadData(ArrayList<Map<String, String>> data,  String table_name, String table_identifier){
+    public void uploadData(ArrayList<Map<String, String>> data,  String table_name, int assetId){
 
         //deleteData();
 
@@ -108,11 +74,13 @@ public class DatabaseConnector {
         int index = 1;
         for (Map<String,String> map : stockValues) {
             try {
-                String date = map.get("date");
-
                 /*
                     Parse the value into an double.
                  */
+
+
+                Timestamp date = Timestamp.valueOf(map.get("date"));
+                //Date date = Date.valueOf(map.get("date"));
                 double open = Double.parseDouble(map.get("open"));
                 double high = Double.parseDouble(map.get("high"));
                 double low = Double.parseDouble(map.get("low"));
@@ -123,19 +91,21 @@ public class DatabaseConnector {
                 Connection conn = DriverManager.getConnection(url, user, pass);
 
                 // Create an INSERT INTO query
-                String query = "INSERT IGNORE INTO " + table_name + table_identifier + "(Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?)";
+                String query = "INSERT IGNORE INTO assetPrices (Asset_id, Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?, ?)";
+
 
                 /*
                     Prepared Statements for an safety upload into the MariaDB
                  */
 
                 PreparedStatement preparedStmt = conn.prepareStatement(query);
-                preparedStmt.setString(1, date);
-                preparedStmt.setDouble(2, open);
-                preparedStmt.setDouble(3, high);
-                preparedStmt.setDouble(4, low);
-                preparedStmt.setDouble(5, close);
-                preparedStmt.setDouble(6, volume);
+                preparedStmt.setInt(1, assetId);
+                preparedStmt.setTimestamp(2, date);
+                preparedStmt.setDouble(3, open);
+                preparedStmt.setDouble(4, high);
+                preparedStmt.setDouble(5, low);
+                preparedStmt.setDouble(6, close);
+                preparedStmt.setDouble(7, volume);
                 preparedStmt.execute();
                 System.out.println(index + "/" + stockValues.size() + " uploaded");
                 index++;
@@ -159,7 +129,7 @@ public class DatabaseConnector {
         try {
             // Connection to the MariaDB
             Connection conn = DriverManager.getConnection(url, user, pass);
-            String query = "delete from history_prices";
+            String query = "delete from assetPrices";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.execute();
             conn.close();
