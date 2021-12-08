@@ -10,7 +10,7 @@ public class Main {
      * Entry-Point und Main der gesamten Applikation.
      * */
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         System.out.println("test");
 
