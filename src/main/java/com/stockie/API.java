@@ -17,12 +17,11 @@ public class API {
      Method to return the result of the API call.
      */
 
-    public String getWebPage(String url) throws IOException, IOException {
+    public String getWebPage(String url) throws IOException {
         HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
         HttpRequest request = requestFactory.buildGetRequest(new GenericUrl(url));
         String response = request.execute().parseAsString();
 
-        //System.out.println(response);
         return response;
     }
 

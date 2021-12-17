@@ -2,10 +2,9 @@ package com.stockie;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+
 
 
 
@@ -18,44 +17,22 @@ public class DatabaseConnector {
     private String url = "jdbc:mysql://185.188.250.67:3306/Se2Projekt";
     private String user = "root";
     private String pass = "StefanWolf2k21";
-    private URLModel urlModel = new URLModel("1A79MCHMT69G16RE","1min");
-    private API api = new API();
+
 
     /**
      Constructor
      */
-    public DatabaseConnector() throws IOException, InterruptedException {
-        daily();
-        //TimeUnit.MINUTES.sleep(1);
-        //history();
-    }
-
-    public void daily() throws IOException {
-
-
-        LinkedHashMap<String, String> alphavantageUrls = urlModel.getAssetUrls();
-        int index = 0;
-        for (String key : alphavantageUrls.keySet()){
-            String response = api.getWebPage(alphavantageUrls.get(key));
-            ArrayList<Map<String, String>> data = api.getJson(response, "1min");
-            uploadData(data, key, index);
-            index++;
-        }
+    public DatabaseConnector() {
 
     }
-    int index = 0;
-    public void history() throws IOException {
 
-        LinkedHashMap<String, String> alphavantageUrls = urlModel.getAssetUrlsHistroy();
-        int index = 0;
-        for (String key : alphavantageUrls.keySet()){
-            String response = api.getWebPage(alphavantageUrls.get(key));
-            ArrayList<Map<String, String>> data = api.getJson(response, "Daily");
-            uploadData(data, key, index);
-            index++;
-        }
+    /**
+     *
+     * Für die Methoden Daily und History gibt es bestimmt eine bessere möglichkeit zu implemntieren
+     *
+     * */
 
-    }
+
 
     /**
      Method to write the data from the API call into the MariaDB
@@ -91,7 +68,7 @@ public class DatabaseConnector {
                 Connection conn = DriverManager.getConnection(url, user, pass);
 
                 // Create an INSERT INTO query
-                String query = "INSERT IGNORE INTO assetPrices (Asset_id, Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?, ?)";
+                String query = "INSERT IGNORE INTO "+ table_name +" (Asset_id, Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?, ?)";
 
 
                 /*
@@ -123,19 +100,6 @@ public class DatabaseConnector {
 
 
 
-    }
-
-    private void deleteData() {
-        try {
-            // Connection to the MariaDB
-            Connection conn = DriverManager.getConnection(url, user, pass);
-            String query = "delete from assetPrices";
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.execute();
-            conn.close();
-        } catch (Exception e) {
-            //TODO: handle exception
-        }
     }
 
 }

@@ -20,17 +20,20 @@ public class URLModel {
     public URLModel (String key, String interval){
         this.key = key;
         this.interval = interval;
+        init();
+    }
+
+    public void init(){
         setAssets();
+        setUrls();
 
     }
 
     public LinkedHashMap<String, String> getAssetUrls(){
-        setUrls();
         return this.assetUrls;
     }
 
     public LinkedHashMap<String, String> getAssetUrlsHistroy(){
-        setUrls();
         return this.assetUrlsHistroy;
     }
 
@@ -64,4 +67,3 @@ public class URLModel {
     }
 
 }
-//

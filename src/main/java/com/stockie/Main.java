@@ -1,9 +1,5 @@
 package com.stockie;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class Main {
     /*
@@ -12,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        System.out.println("test");
+        System.out.println("Starte Upload in die Datenbank Se2Projekt.");
 
         /**
          *
@@ -20,23 +16,7 @@ public class Main {
          *
          * */
 
-        URLModel url = new URLModel("1A79MCHMT69G16RE","1min");
+        new DatabaseConnectorFactory();
 
-        LinkedHashMap<String, String> test1 =url.getAssetUrls();
-        LinkedHashMap<String, String> test2 = url.getAssetUrlsHistroy();
-
-        for (String key: test1.keySet()){
-
-            System.out.println(key+":" + test1.get(key));
-
-        }
-
-        for (String key: test2.keySet()){
-
-            System.out.println(key+":" + test2.get(key));
-
-        }
-
-        new DatabaseConnector();
     }
 }
