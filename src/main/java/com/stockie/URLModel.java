@@ -1,15 +1,19 @@
 package com.stockie;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class URLModel {
 
     protected String key;
     protected String interval;
     protected String function;
+    protected String assets;
 
 
     LinkedHashMap<String, String> assetUrls = new LinkedHashMap<String, String>();
-    LinkedHashMap<String, String> assetUrlsHistroy = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> assetUrlsHistory = new LinkedHashMap<String, String>();
+
 
     /**
 
@@ -17,9 +21,10 @@ public class URLModel {
 
      */
 
-    public URLModel (String key, String interval){
+    public URLModel (String key, String interval, String assets){
         this.key = key;
         this.interval = interval;
+        this.assets = assets;
         init();
     }
 
@@ -33,16 +38,17 @@ public class URLModel {
         return this.assetUrls;
     }
 
-    public LinkedHashMap<String, String> getAssetUrlsHistroy(){
-        return this.assetUrlsHistroy;
+    public LinkedHashMap<String, String> getAssetUrlsHistory(){
+        return this.assetUrlsHistory;
     }
 
     public void setAssets() {
-        this.assetUrls.put("AAPL", "");
-        this.assetUrls.put("MSFT", "");
-        this.assetUrls.put("TSLA", "");
-        this.assetUrls.put("NVDA", "");
-        this.assetUrls.put("AMZN", "");
+
+        List<String> listOfAssets = Arrays.asList(this.assets.split(","));
+
+        for( int i = 0; i < listOfAssets.size(); i++ ) {
+            this.assetUrls.put(listOfAssets.get(i), "");
+        }
     }
 
     public void setFunction(String function) {
@@ -61,7 +67,7 @@ public class URLModel {
             String url2 ="https://www.alphavantage.co/query?function="+function+"&symbol="+assetKey+"&outputsize=full&apikey="+key;
 
             this.assetUrls.put(assetKey, url);
-            this.assetUrlsHistroy.put(assetKey, url2);
+            this.assetUrlsHistory.put(assetKey, url2);
         }
 
     }

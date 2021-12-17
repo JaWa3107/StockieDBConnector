@@ -1,22 +1,29 @@
 package com.stockie;
+
+import com.stockie.config.Config;
 import java.io.IOException;
 
+
 public class Main {
+
     /*
      * Entry-Point und Main der gesamten Applikation.
      * */
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        System.out.println("Starte Upload in die Datenbank Se2Projekt.");
+        Config config = new Config();
+        URLModel urlModel = new URLModel(config.getKey("Alphakey"),config.getInterval("Interval"),config.getAssets("Assets"));
+        API api = new API();
+        DatabaseConnector DbConn = new DatabaseConnector();
+        Routine routine = new Routine(urlModel,DbConn,api);
 
-        /**
-         *
-         * API CALLS AND UPLOAD TO THE MARIA DB
-         *
-         * */
+        System.out.println("Starting Upload");
 
-        new DatabaseConnectorFactory();
+        routine.init(config.getInterval("Interval"), config.getTableName("TableName"));
+        Thread.sleep(60 * 1000); // Wait for 60 seconds
+        routine.init(config.getIdentifier("Identifier"), config.getTableName("HistoryTableName"));
 
     }
+
 }

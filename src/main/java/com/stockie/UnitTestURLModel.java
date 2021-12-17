@@ -1,22 +1,16 @@
 package com.stockie;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
     public class UnitTestURLModel {
-        URLModel url = new URLModel("1A79MCHMT69G16RE", "1min");
+        URLModel url = new URLModel("1A79MCHMT69G16RE", "1min", "AAPL,MSFT,TSLA,NVDA,AMZN");
         MockData urlMock = new MockData();
+
         @Test
         public void getAssetUrlsUnitTest(){
-
-
-
-
             LinkedHashMap<String, String> actualUrls = url.getAssetUrls();
             ArrayList<String> expectedUrls = urlMock.getUrlMock();
 
@@ -31,11 +25,7 @@ import java.util.LinkedHashMap;
         }
         @Test
         public void getAssetUrlsHistoryUnitTest(){
-
-
-
-
-            LinkedHashMap<String, String> actualHistoryUrls = url.getAssetUrlsHistroy();
+            LinkedHashMap<String, String> actualHistoryUrls = url.getAssetUrlsHistory();
             ArrayList<String> expectedHistoryUrls = urlMock.getHistoryUrlMock();
 
             int i = 0;
