@@ -51,9 +51,14 @@ public class DatabaseConnector {
                 PreparedStatement preparedStmt = conn.prepareStatement(query);
                 preparedStmt.setInt(1, assetId);
 
-                if (tableName.equals("assetPrices")) {
-                    Timestamp date = Timestamp.valueOf(map.get("date"));
+                if (tableName.equals("polygonTestPrices")) {
+                    long test = Long.parseLong(map.get("date"));
+
+                    Timestamp date = new Timestamp(test);
+                    //String date = map.get("date");
                     preparedStmt.setTimestamp(2, date);
+                    //Timestamp date = Timestamp.valueOf(map.get("date"));
+                    //preparedStmt.setTimestamp(2, date);
                 }else if(tableName.equals("assetHistoryPrices")){
                     Date date = Date.valueOf(map.get("date"));
                     preparedStmt.setDate(2, date);
@@ -82,7 +87,7 @@ public class DatabaseConnector {
                 // Disconnect
                 conn.close();
             } catch (Exception e) {
-                System.out.println(e.getLocalizedMessage());
+                System.out.println(e.getStackTrace().toString());
             }
         }
 

@@ -23,7 +23,7 @@ public class Routine {
     public void init(String identifier,String tableName) throws IOException {
         LinkedHashMap<String, String> alphavantageUrls = null;
 
-        if(tableName.equals("assetPrices")){
+        if(tableName.equals("polygonTestPrices")){
              alphavantageUrls = urlModel.getAssetUrls();
         }else if(tableName.equals("assetHistoryPrices")){
             alphavantageUrls = urlModel.getAssetUrlsHistory();
@@ -32,7 +32,7 @@ public class Routine {
         int index = 0;
         for (String key : alphavantageUrls.keySet()){
             String response = api.getWebPage(alphavantageUrls.get(key));
-            ArrayList<Map<String, String>> data = api.getJson(response, identifier);
+            ArrayList<Map<String, String>> data = api.getJson(response);
             DbConn.uploadData(data, tableName, index);
             index++;
         }

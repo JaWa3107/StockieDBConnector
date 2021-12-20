@@ -1,20 +1,26 @@
 package com.stockie;
+
 import java.io.IOException;
+
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import org.json.*;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 public class API {
 
     /**
-     Method to return the result of the API call.
+     * Method to return the result of the API call.
      */
 
     public String getWebPage(String url) throws IOException {
@@ -26,10 +32,10 @@ public class API {
     }
 
     /**
-     Method to get a structured Arraylist of all entries of the API call
+     * Method to get a structured Arraylist of all entries of the API call
      */
 
-    public ArrayList<Map<String, String>> getJson(String response, String identifier) {
+    public ArrayList<Map<String, String>> getJson(String response) {
 
         // Create a Hashmap to store the individual values
         Map<String, String> values = new HashMap<String, String>();
@@ -37,36 +43,39 @@ public class API {
         // Create ArrayList with the type of hashmap
         ArrayList<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
-        try {
-            //Create an JSONObject from the result.
-            JSONObject obj = new JSONObject(response);
+        JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
 
-            // Dive into the structure of the JSON
-            String mData = obj.getJSONObject("Time Series ("+identifier+")").toString();
+        //JsonElement results = jsonObject.getAsJsonArray("results");
 
+        JsonArray results = jsonObject.getAsJsonArray("results");
 
-            JSONObject objtwo = new JSONObject(mData);
+        System.out.println(results);
 
-            Iterator<?> keys = objtwo.keys();
+        for (JsonElement pa : results) {
+            JsonObject paymentObj = pa.getAsJsonObject();
 
-            /*
-                loop by the API call to save the individual values in the hashmap and then in the Arraylist
-             */
-            while (keys.hasNext()) {
-                String key = (String) keys.next();
-                values.put("date", key);
-                values.put("open", objtwo.getJSONObject(key).getString("1. open"));
-                values.put("high", objtwo.getJSONObject(key).getString("2. high"));
-                values.put("low", objtwo.getJSONObject(key).getString("3. low"));
-                values.put("close", objtwo.getJSONObject(key).getString("4. close"));
-                values.put("volume", objtwo.getJSONObject(key).getString("5. volume"));
-                data.add(values);
-                values = new HashMap<String, String>();
-            }
+            String date = paymentObj.get("t").getAsString();
 
-        } catch (Exception e) {
-            System.out.println(e);
+            values.put("date", date);
+            values.put("open", paymentObj.get("o").getAsString());
+            values.put("high", paymentObj.get("h").getAsString());
+            values.put("low", paymentObj.get("l").getAsString());
+            values.put("close", paymentObj.get("c").getAsString());
+            values.put("volume", paymentObj.get("v").getAsString());
+            data.add(values);
+            values = new HashMap<String, String>();
+
+            //String date = paymentObj.get("t").getAsString();
+            // String open = paymentObj.get("o").getAsString();
+            //String high = paymentObj.get("h").getAsString();
+            //String low = paymentObj.get("l").getAsString();
+            //String close = paymentObj.get("c").getAsString();
+            //String volume = paymentObj.get("v").getAsString();
         }
+
+
+        //JsonElement datenSatz = results.getAsJsonObject();
+
 
         return data;
     }

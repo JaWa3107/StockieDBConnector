@@ -61,13 +61,13 @@ public class URLModel {
         {
 
             String assetKey = keys;
-            setFunction("TIME_SERIES_INTRADAY");
-            String url ="https://www.alphavantage.co/query?function="+function+"&symbol="+assetKey+"&interval="+ interval+"&outputsize=full&apikey="+key;
-            setFunction("TIME_SERIES_DAILY");
-            String url2 ="https://www.alphavantage.co/query?function="+function+"&symbol="+assetKey+"&outputsize=full&apikey="+key;
+            //setFunction("TIME_SERIES_INTRADAY");
+            String url ="https://api.polygon.io/v2/aggs/ticker/"+ assetKey +"/range/1/minute/2021-12-16/2021-12-16?adjusted=true&sort=asc&limit=1000&apiKey=" + key;
+            //setFunction("TIME_SERIES_DAILY");
+            //String url2 ="https://www.alphavantage.co/query?function="+function+"&symbol="+assetKey+"&outputsize=full&apikey="+key;
 
             this.assetUrls.put(assetKey, url);
-            this.assetUrlsHistory.put(assetKey, url2);
+            //this.assetUrlsHistory.put(assetKey, url2);
         }
 
     }
