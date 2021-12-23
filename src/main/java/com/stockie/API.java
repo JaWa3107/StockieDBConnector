@@ -1,32 +1,42 @@
 package com.stockie;
+
 import java.io.IOException;
+
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.json.*;
 
 
 public class API {
 
     /**
-     Method to return the result of the API call.
+     * Method to return the result of the API call.
      */
 
     public String getWebPage(String url) throws IOException {
+
         HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
         HttpRequest request = requestFactory.buildGetRequest(new GenericUrl(url));
         String response = request.execute().parseAsString();
+        if (response.contains("Meta Data") == true) {
+            return response;
 
-        return response;
+        }
+        String fehler = "Keine gültige API.";
+        return fehler;
+
     }
 
     /**
-     Method to get a structured Arraylist of all entries of the API call
+     * Method to get a structured Arraylist of all entries of the API call
      */
 
     public ArrayList<Map<String, String>> getJson(String response, String identifier) {
@@ -42,7 +52,7 @@ public class API {
             JSONObject obj = new JSONObject(response);
 
             // Dive into the structure of the JSON
-            String mData = obj.getJSONObject("Time Series ("+identifier+")").toString();
+            String mData = obj.getJSONObject("Time Series (" + identifier + ")").toString();
 
 
             JSONObject objtwo = new JSONObject(mData);

@@ -27,7 +27,7 @@ public class DatabaseConnector {
      Method to write the data from the API call into the MariaDB
      */
 
-    public void uploadData(ArrayList<Map<String, String>> data,  String tableName, int assetId){
+    public int uploadData(ArrayList<Map<String, String>> data,  String tableName, int assetId){
 
         // ArrayList with the data from the API call.
         ArrayList<Map<String, String>> stockValues = data;
@@ -57,8 +57,11 @@ public class DatabaseConnector {
                 }else if(tableName.equals("assetHistoryPrices")){
                     Date date = Date.valueOf(map.get("date"));
                     preparedStmt.setDate(2, date);
-                }
+                }else if(tableName.equals("unitTestPrices")) {
 
+                    Timestamp date = Timestamp.valueOf(map.get("date"));
+                    preparedStmt.setTimestamp(2, date);
+                }
                 double open = Double.parseDouble(map.get("open"));
                 preparedStmt.setDouble(3, open);
 
@@ -84,12 +87,13 @@ public class DatabaseConnector {
             } catch (Exception e) {
                 System.out.println(e.getLocalizedMessage());
             }
+
         }
 
         System.out.println("Die Verbindung zur Datenbank wurde aufgehoben. Alle Daten wurden erfolgreich hochgeladen.");
 
 
-
+    return index;
 
     }
 
