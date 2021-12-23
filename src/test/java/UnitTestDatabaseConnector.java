@@ -1,9 +1,5 @@
-package com.stockie;
-
-
-
-
-
+import com.stockie.API;
+import com.stockie.DatabaseConnector;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.io.IOException;

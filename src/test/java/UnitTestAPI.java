@@ -1,6 +1,8 @@
-package com.stockie;
 
 
+
+import com.stockie.API;
+import com.stockie.MockData;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.io.IOException;

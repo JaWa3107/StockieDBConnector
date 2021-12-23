@@ -1,5 +1,6 @@
-package com.stockie;
 
+import com.stockie.MockData;
+import com.stockie.URLModel;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
