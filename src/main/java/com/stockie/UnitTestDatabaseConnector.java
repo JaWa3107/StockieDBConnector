@@ -1,9 +1,11 @@
 package com.stockie;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
 
+
+
+import org.junit.Test;
+import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
