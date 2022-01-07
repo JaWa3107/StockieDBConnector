@@ -48,6 +48,7 @@ public class URLModel {
 
         for( int i = 0; i < listOfAssets.size(); i++ ) {
             this.assetUrls.put(listOfAssets.get(i), "");
+
         }
     }
 

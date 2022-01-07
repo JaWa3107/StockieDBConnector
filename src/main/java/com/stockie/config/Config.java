@@ -38,7 +38,21 @@ public class Config {
         throwExceptionWhenNull(assets,assetsName);
         return assetsName;
     }
-
+    public static String getDbUrl(String DbUrl){
+        String DbUrlName = (String) properties.get(DbUrl);
+        throwExceptionWhenNull(DbUrl,DbUrlName);
+        return DbUrlName;
+    }
+    public static String getDbUser(String DbUser){
+        String DbUserName = (String) properties.get(DbUser);
+        throwExceptionWhenNull(DbUser,DbUserName);
+        return DbUserName;
+    }
+    public static String getDbPass(String DbPass){
+        String DbPassName = (String) properties.get(DbPass);
+        throwExceptionWhenNull(DbPass,DbPassName);
+        return DbPassName;
+    }
 
     private static void throwExceptionWhenNull(String property, String Parameter){
         if (Parameter == null){

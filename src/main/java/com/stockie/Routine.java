@@ -20,7 +20,7 @@ public class Routine {
 
     }
 
-    public void init(String identifier,String tableName) throws IOException {
+    public void init(String identifier,String tableName,String DbUrl, String DbUser, String DbPass) throws IOException {
         LinkedHashMap<String, String> alphavantageUrls = null;
 
         if(tableName.equals("assetPrices")){
@@ -33,7 +33,7 @@ public class Routine {
         for (String key : alphavantageUrls.keySet()){
             String response = api.getWebPage(alphavantageUrls.get(key));
             ArrayList<Map<String, String>> data = api.getJson(response, identifier);
-            DbConn.uploadData(data, tableName, index);
+            DbConn.uploadData(data, tableName, index,  DbUrl,  DbUser,  DbPass);
             index++;
         }
 

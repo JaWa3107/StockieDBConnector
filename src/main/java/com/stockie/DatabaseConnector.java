@@ -12,9 +12,10 @@ public class DatabaseConnector {
      Loginparameter for the MariaDB.
      */
 
-    private String url = "jdbc:mysql://185.188.250.67:3306/Se2Projekt";
-    private String user = "root";
-    private String pass = "StefanWolf2k21";
+    //private String url = "jdbc:mysql://185.188.250.67:3306/Se2Projekt";
+   // private String user = "root";
+   // private String pass = "cPNMcZGcmi4Z4UTN";
+
 
     /**
      Constructor
@@ -27,7 +28,7 @@ public class DatabaseConnector {
      Method to write the data from the API call into the MariaDB
      */
 
-    public int uploadData(ArrayList<Map<String, String>> data,  String tableName, int assetId){
+    public int uploadData(ArrayList<Map<String, String>> data,  String tableName, int assetId,String dbUrl, String dbUser, String dbPass){
 
         // ArrayList with the data from the API call.
         ArrayList<Map<String, String>> stockValues = data;
@@ -35,11 +36,12 @@ public class DatabaseConnector {
         /*
             loop to write all entries from the list into the MariaDB (row for row!)
         */
-        int index = 1;
+        int index = 0;
+        String upload = "";
         for (Map<String,String> map : stockValues) {
             try{
                 // Connection to the MariaDB
-                Connection conn = DriverManager.getConnection(url, user, pass);
+                Connection conn = DriverManager.getConnection(dbUrl , dbUser, dbPass);
 
                 // Create an INSERT INTO query
                 String query = "INSERT IGNORE INTO "+ tableName +" (Asset_id, Price_date, open, high, low, close, volume) values (?, ?, ?, ?, ?, ?, ?)";
@@ -84,8 +86,11 @@ public class DatabaseConnector {
 
                 // Disconnect
                 conn.close();
+
+               // return upload;
             } catch (Exception e) {
                 System.out.println(e.getLocalizedMessage());
+
             }
 
         }
@@ -93,8 +98,8 @@ public class DatabaseConnector {
         System.out.println("Die Verbindung zur Datenbank wurde aufgehoben. Alle Daten wurden erfolgreich hochgeladen.");
 
 
+
     return index;
 
-    }
 
-}
+ }}

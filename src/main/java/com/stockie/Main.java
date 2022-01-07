@@ -20,9 +20,9 @@ public class Main {
 
         System.out.println("Starting Upload");
 
-        routine.init(config.getIdentifier("minute"), config.getTableName("TableName"));
+        routine.init(config.getIdentifier("minute"), config.getTableName("TableName"), config.getDbUrl("DbUrl"), config.getDbUser("DbUser"), config.getDbPass("DbPass"));
         Thread.sleep(60 * 1000); // Wait for 60 seconds
-        routine.init(config.getIdentifier("daily"), config.getTableName("HistoryTableName"));
+        routine.init(config.getIdentifier("daily"), config.getTableName("HistoryTableName"), config.getDbUrl("DbUrl"), config.getDbUser("DbUser"), config.getDbPass("DbPass"));
 
     }
 
