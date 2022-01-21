@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
     public class UnitTestURLModel {
         URLModel url = new URLModel("1A79MCHMT69G16RE", "1min", "AAPL,MSFT,TSLA,NVDA,AMZN");
         MockData urlMock = new MockData();
-
+        //test to check if the AssetUrl was right
         @Test
         public void getAssetUrlsUnitTest(){
             LinkedHashMap<String, String> actualUrls = url.getAssetUrls();
@@ -27,7 +27,7 @@ import java.util.LinkedHashMap;
 
         }
 
-
+        //test to check if the AssetUrlHistoryURL was right
         @Test
         public void getAssetUrlsHistoryUnitTest(){
             LinkedHashMap<String, String> actualHistoryUrls = url.getAssetUrlsHistory();

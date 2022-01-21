@@ -4,11 +4,9 @@ import com.stockie.config.Config;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+
 import java.util.Map;
 
 
@@ -17,7 +15,7 @@ public class UnitTestDatabaseConnector {
     API api = new API();
     Config config = new Config();
 
-
+    // test to check if the upload was successful
     @Test
     public void uploadDataBaseUnitTest() throws IOException {
         String testResponse = api.getWebPage("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo%22");
@@ -26,6 +24,7 @@ public class UnitTestDatabaseConnector {
         assertEquals(100,index);
 
     }
+    // test to check if the upload with falseidentifier was successful
     @Test
     public void falseIdentifierUploadDataBaseUnitTest() throws IOException {
 
@@ -38,6 +37,7 @@ public class UnitTestDatabaseConnector {
 
 
     }
+    // test to check if the Password was wrong
     @Test
     public void falseloginPasswordUnitTest() throws IOException {
 
@@ -48,6 +48,7 @@ public class UnitTestDatabaseConnector {
         assertEquals(0,falsePass);
 
     }
+    // test to check if URL was wrong
     @Test
     public void falseloginUrlUnitTest() throws IOException {
         String testResponse = api.getWebPage("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo%22");
@@ -57,6 +58,7 @@ public class UnitTestDatabaseConnector {
         assertEquals(0,falseUrl);
 
     }
+    // test to check if the Username was wrong
     @Test
     public void falseloginUserUnitTest() throws IOException {
         String testResponse = api.getWebPage("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo%22");
