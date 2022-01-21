@@ -52,7 +52,7 @@ public class UnitTestDatabaseConnector {
     public void falseloginUrlUnitTest() throws IOException {
         String testResponse = api.getWebPage("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo%22");
         ArrayList<Map<String, String>> data  = api.getJson(testResponse,"5min");
-        int falseUrl = database.uploadData(data,"unitTestPrices",0, "example.url", config.getDbUser("DbUser"), config.getDbPass("DbPass"));
+        int falseUrl = database.uploadData(data,"unitTestPrices",0, "example.com", config.getDbUser("DbUser"), config.getDbPass("DbPass"));
         System.out.println(falseUrl);
         assertEquals(0,falseUrl);
 
@@ -66,6 +66,7 @@ public class UnitTestDatabaseConnector {
         assertEquals(0,falseUser);
 
     }
+
 
 
 }

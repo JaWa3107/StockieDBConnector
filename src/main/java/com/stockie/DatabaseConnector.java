@@ -8,13 +8,8 @@ import java.util.Map;
 
 public class DatabaseConnector {
 
-    /**
-     Loginparameter for the MariaDB.
-     */
 
-    //private String url = "jdbc:mysql://185.188.250.67:3306/Se2Projekt";
-   // private String user = "root";
-   // private String pass = "cPNMcZGcmi4Z4UTN";
+
 
 
     /**
